@@ -152,6 +152,7 @@ namespace ShellProject
             // Check if OK button was clicked and the entered password is correct
             if (result == true && passwordPromptWindow.EnteredPassword == "123")
             {
+                loggerApplication.Log(LogLevel.Info, "Application Closing", "The application is closing.");
                 return true; // Allow closing the application
             }
             else
