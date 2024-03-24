@@ -31,5 +31,18 @@ namespace ShellProject
                 DragMove();
             }
         }
+
+        private void PasswordInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                OKButton_Click(sender, e);
+            }
+        }
+
+        private void PasswordInput_Loaded(object sender, RoutedEventArgs e)
+        {
+            PasswordInput.Focus();
+        }
     }
 }
