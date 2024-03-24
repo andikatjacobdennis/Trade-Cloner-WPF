@@ -39,6 +39,8 @@ namespace ShellProject
             detector = new InternetOutageDetector();
             detector.InternetConnectionChanged += HandleInternetConnectionChanged;
             detector.Start();
+            LastOutageLabel.Content = detector.GetLastOutage();
+            TotalOutagesLabel.Content = detector.GetTotalOutages();
         }
 
         // Event handler method for InternetConnectionChanged event
@@ -116,6 +118,32 @@ namespace ShellProject
         {
             ShowInternetDisruptions showInternetDisruptions = new ShowInternetDisruptions(detector);
             showInternetDisruptions.ShowDialog();
+        }
+
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Ask for password when closing the application
+            if (!VerifyPassword())
+            {
+                e.Cancel = true; // Cancel the closing event if the password is incorrect
+            }
+        }
+
+        private bool VerifyPassword()
+        {
+            // Create and show the custom password prompt window
+            var passwordPromptWindow = new PasswordPromptWindow();
+            bool? result = passwordPromptWindow.ShowDialog();
+
+            // Check if OK button was clicked and the entered password is correct
+            if (result == true && passwordPromptWindow.EnteredPassword == "123")
+            {
+                return true; // Allow closing the application
+            }
+            else
+            {
+                return false; // Cancel closing the application
+            }
         }
     }
 }

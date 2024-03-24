@@ -1,68 +1,70 @@
 ﻿<Window x:Class="ShellProject.MainWindow"
-        xmlns:local="clr-namespace:ShellProject"     
+        xmlns:local="clr-namespace:ShellProject"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:system="clr-namespace:System;assembly=mscorlib"        
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Style="{StaticResource MaterialDesignWindow}"
         FontFamily="{StaticResource MaterialDesignFont}"
-        Title="Trade Cloner WPF Application"
+        Title="Trade Cloner WPF Application (Version 1.0)"
         Icon="favicon.ico"
         Width="1150"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Closing="MainWindow_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <materialDesign:Card Margin="8 8 4 4">
             <StackPanel Orientation="Vertical">
                 <!-- Application Start Time -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <Label Content="Application Start Time:" VerticalAlignment="Center"/>
-                    <Label x:Name="StartTimeLabel" VerticalAlignment="Center"/>
+                    <Label Content="Application Start Time:" VerticalAlignment="Center" />
+                    <Label x:Name="StartTimeLabel" VerticalAlignment="Center" />
                 </StackPanel>
                 <!-- Last Network Outage -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <Label Content="Last Network Outage:" VerticalAlignment="Center"/>
-                    <Label x:Name="LastOutageLabel" VerticalAlignment="Center"/>
+                    <Label Content="Last Network Outage:" VerticalAlignment="Center" />
+                    <Label x:Name="LastOutageLabel" VerticalAlignment="Center" />
                     <Grid>
-                        <Button Margin="0,0,8,0" ToolTip="Show Internet Outage Data" Click="ViewDetailInternetOutages_Click" Style="{DynamicResource MaterialDesignFlatButton}">
-                            <materialDesign:PackIcon Width="20" Height="20" Kind="InfoBox" />
+                        <Button ToolTip="Show Internet Outage Data" Click="ViewDetailInternetOutages_Click" Style="{DynamicResource MaterialDesignIconButton}">
+                            <materialDesign:PackIcon Width="24" Height="24" Kind="InfoBox" />
                         </Button>
                     </Grid>
 
                 </StackPanel>
                 <!-- Total Network Outages -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <Label Content="Total Network Outages:" VerticalAlignment="Center"/>
-                    <Label x:Name="TotalOutagesLabel" VerticalAlignment="Center"/>
+                    <Label Content="Total Network Outages:" VerticalAlignment="Center" />
+                    <Label x:Name="TotalOutagesLabel" VerticalAlignment="Center" />
                 </StackPanel>
             </StackPanel>
         </materialDesign:Card>
 
         <!-- Second Card -->
-        <materialDesign:Card Grid.Column="1"  Margin="4 8 8 4">
+        <materialDesign:Card Grid.Column="1" Margin="4 8 8 4">
             <StackPanel Orientation="Vertical">
 
                 <!-- Parent Login -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <Label Content="Parent Login:" VerticalAlignment="Center"/>
-                    <Label x:Name="ParentLoginLabel" VerticalAlignment="Center"/>
+                    <Label Content="Parent Login:" VerticalAlignment="Center" />
+                    <Label x:Name="ParentLoginLabel" VerticalAlignment="Center" />
                 </StackPanel>
-                
+
                 <!-- Child Login -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <Label Content="Child Login:" VerticalAlignment="Center"/>
-                    <Label x:Name="ChildLoginLabel" VerticalAlignment="Center"/>
+                    <Label Content="Child Login:" VerticalAlignment="Center" />
+                    <Label x:Name="ChildLoginLabel" VerticalAlignment="Center" />
                 </StackPanel>
             </StackPanel>
         </materialDesign:Card>
@@ -70,13 +72,13 @@
         <materialDesign:Card Grid.Row="1" Margin="8 4 4 8">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <!-- Parent Logs ScrollViewer with Material Design Theme -->
-                <TextBlock Text="Parent Logs" Grid.Row="0" Grid.Column="0" Style="{DynamicResource MaterialDesignSubtitle1TextBlock}" HorizontalAlignment="Left" Margin="8"/>
-                <ScrollViewer x:Name="ParentLogsScrollViewer" Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="1" >
-                    <ListBox x:Name="ParentLogsListBox" Style="{DynamicResource MaterialDesignListBox}" />
+                <TextBlock Text="Parent Logs" Grid.Row="0" Grid.Column="0" Style="{DynamicResource MaterialDesignSubtitle1TextBlock}" HorizontalAlignment="Left" Margin="8" />
+                <ScrollViewer x:Name="ParentLogsScrollViewer" Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="1">
+                    <ListBox x:Name="ParentLogsListBox" ItemsSource="{Binding ParentLogs}" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" Style="{DynamicResource MaterialDesignListBox}" />
                 </ScrollViewer>
             </Grid>
         </materialDesign:Card>
@@ -84,13 +86,13 @@
         <materialDesign:Card Grid.Row="1" Grid.Column="1" Margin="4 4 8 8">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <!-- Child Logs ScrollViewer with Material Design Theme -->
-                <TextBlock Text="Child Logs" Grid.Row="0" Grid.Column="1" Style="{DynamicResource MaterialDesignSubtitle1TextBlock}" HorizontalAlignment="Left" Margin="8"/>
-                <ScrollViewer x:Name="ChildLogsScrollViewer" Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="1" >
-                    <ListBox x:Name="ChildLogsListBox" Style="{DynamicResource MaterialDesignListBox}" />
+                <TextBlock Text="Child Logs" Grid.Row="0" Grid.Column="1" Style="{DynamicResource MaterialDesignSubtitle1TextBlock}" HorizontalAlignment="Left" Margin="8" />
+                <ScrollViewer x:Name="ChildLogsScrollViewer" Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="1">
+                    <ListBox x:Name="ChildLogsListBox" ItemsSource="{Binding ChildLogs}" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" Style="{DynamicResource MaterialDesignListBox}" />
                 </ScrollViewer>
             </Grid>
         </materialDesign:Card>
