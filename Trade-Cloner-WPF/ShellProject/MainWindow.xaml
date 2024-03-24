@@ -13,6 +13,7 @@
         Icon="favicon.ico"
         Width="1150"
         WindowStartupLocation="CenterScreen"
+        Background="White"
         WindowState="Maximized"
         Closing="MainWindow_Closing">
     <Grid>
@@ -76,9 +77,68 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <!-- Parent Logs ScrollViewer with Material Design Theme -->
-                <TextBlock Text="Parent Logs" Grid.Row="0" Grid.Column="0" Style="{DynamicResource MaterialDesignSubtitle1TextBlock}" HorizontalAlignment="Left" Margin="8" />
+                <TextBlock Text="Parent Logs" Grid.Row="0" Grid.Column="0" Style="{DynamicResource MaterialDesignSubtitle1TextBlock}" HorizontalAlignment="Left" Margin="8 8 8 16" />
                 <ScrollViewer x:Name="ParentLogsScrollViewer" Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="1">
-                    <ListBox x:Name="ParentLogsListBox" ItemsSource="{Binding ParentLogs}" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" Style="{DynamicResource MaterialDesignListBox}" />
+                    <ListBox x:Name="ParentLogsListBox" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" Style="{DynamicResource MaterialDesignListBox}" ItemsSource="{Binding ParentLogs}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border x:Name="Border" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="Border" Property="Background" Value="LightGray" />
+                                                    <Setter TargetName="Border" Property="BorderBrush" Value="DarkGray" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <!--<Setter Property="BorderThickness" Value="1" />-->
+                                        <Setter Property="BorderBrush" Value="#212121" />
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding Level}" Value="Fatal">
+                                        <Setter Property="Background" Value="#FFAB91" />
+                                        <Setter Property="Foreground" Value="#212121" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Level}" Value="Error">
+                                        <Setter Property="Background" Value="#FFCC80" />
+                                        <Setter Property="Foreground" Value="#212121" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Level}" Value="Warning">
+                                        <Setter Property="Background" Value="#FFFDE7" />
+                                        <Setter Property="Foreground" Value="#212121" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding DateTime}" Grid.Column="0" />
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="{Binding Summary}" />
+                                        <TextBlock Text="{Binding Description}" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </ScrollViewer>
             </Grid>
         </materialDesign:Card>
@@ -90,9 +150,69 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <!-- Child Logs ScrollViewer with Material Design Theme -->
-                <TextBlock Text="Child Logs" Grid.Row="0" Grid.Column="1" Style="{DynamicResource MaterialDesignSubtitle1TextBlock}" HorizontalAlignment="Left" Margin="8" />
+                <TextBlock Text="Child Logs" Grid.Row="0" Grid.Column="1" Style="{DynamicResource MaterialDesignSubtitle1TextBlock}" HorizontalAlignment="Left" Margin="8 8 8 16" />
                 <ScrollViewer x:Name="ChildLogsScrollViewer" Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="1">
-                    <ListBox x:Name="ChildLogsListBox" ItemsSource="{Binding ChildLogs}" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" Style="{DynamicResource MaterialDesignListBox}" />
+                    <ListBox x:Name="ChildLogsListBox" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" Style="{DynamicResource MaterialDesignListBox}" ItemsSource="{Binding ChildLogs}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border x:Name="Border" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="Border" Property="Background" Value="LightGray" />
+                                                    <Setter TargetName="Border" Property="BorderBrush" Value="DarkGray" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <!--<Setter Property="BorderThickness" Value="1" />-->
+                                        <Setter Property="BorderBrush" Value="#212121" />
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding Level}" Value="Fatal">
+                                        <Setter Property="Background" Value="#FFAB91" />
+                                        <Setter Property="Foreground" Value="#212121" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Level}" Value="Error">
+                                        <Setter Property="Background" Value="#FFCC80" />
+                                        <Setter Property="Foreground" Value="#212121" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Level}" Value="Warning">
+                                        <Setter Property="Background" Value="#FFFDE7" />
+                                        <Setter Property="Foreground" Value="#212121" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding DateTime}" Grid.Column="0" />
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="{Binding Summary}" />
+                                        <TextBlock Text="{Binding Description}" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
                 </ScrollViewer>
             </Grid>
         </materialDesign:Card>
