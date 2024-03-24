@@ -8,6 +8,6 @@ namespace ShellProject
 {
     public static class Constants
     {
-        public const string jsonDataFilePath = @"C:\trade_data.json"; // Path to the JSON file
+        public const string jsonDataFilePath = @"trade_data.json"; // Path to the JSON file
     }
 }

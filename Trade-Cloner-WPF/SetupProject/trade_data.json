@@ -1,0 +1,8 @@
+{
+  "ParentAPIKey": "your_parent_api_key",
+  "ParentSecret": "your_parent_secret",
+  "ParentAccessToken": "parent_access_token",
+  "ChildAPIKey": "your_child_api_key",
+  "ChildSecret": "your_child_secret",
+  "ChildAccessToken": "child_access_token"
+}
