@@ -1,32 +1,7 @@
-﻿using System;
-using System.Threading;
-using System.Windows;
+﻿using System.Windows;
 
 namespace ShellProject
 {
-    public static class SingleInstanceManager
-    {
-        private const string MutexName = "ShellProjectMutex";
-        private static Mutex mutex;
-
-        public static bool Initialize()
-        {
-            bool createdNew;
-            mutex = new Mutex(true, MutexName, out createdNew);
-            return createdNew;
-        }
-
-        public static void Cleanup()
-        {
-            if (mutex != null)
-            {
-                mutex.ReleaseMutex();
-                mutex.Close();
-                mutex = null;
-            }
-        }
-    }
-
     public partial class App : Application
     {
         protected override void OnStartup(StartupEventArgs e)

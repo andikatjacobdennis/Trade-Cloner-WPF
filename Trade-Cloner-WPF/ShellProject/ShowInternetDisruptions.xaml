@@ -18,8 +18,8 @@
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <DataGrid x:Name="OutagesDataGrid" AutoGenerateColumns="False" ItemsSource="{Binding OutageHistory}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Outage Start Time" Binding="{Binding Item1}" />
-                            <DataGridTextColumn Header="Outage End Time" Binding="{Binding Item2}" />
+                            <DataGridTextColumn Header="Outage Start Time" Binding="{Binding Item1, StringFormat={}{0:dd-MM-yyyy hh:mm:ss tt}}" />
+                            <DataGridTextColumn Header="Outage End Time" Binding="{Binding Item2, StringFormat={}{0:dd-MM-yyyy hh:mm:ss tt}}" />
                             <DataGridTextColumn Header="Outage Duration (Seconds)" Binding="{Binding Item3}" />
                         </DataGrid.Columns>
                     </DataGrid>

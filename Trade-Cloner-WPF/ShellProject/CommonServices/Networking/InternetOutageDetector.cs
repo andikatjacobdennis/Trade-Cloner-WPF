@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Timers;
+﻿using System.Timers;
 using Timer = System.Timers.Timer;
 
-namespace ShellProject
+namespace ShellProject.CommonServices.Networking
 {
     public class InternetOutageDetector : IDisposable
     {

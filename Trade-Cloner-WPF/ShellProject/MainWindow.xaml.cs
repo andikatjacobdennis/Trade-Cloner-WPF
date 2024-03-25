@@ -1,7 +1,11 @@
 ﻿using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using ShellProject.CommonServices.Logging;
+using ShellProject.CommonServices.Networking;
+using ShellProject.CommonServices.TradeManagement;
 
 namespace ShellProject
 {
@@ -10,12 +14,15 @@ namespace ShellProject
         private FileLogger loggerApplication;
         private FileLogger loggerParent;
         private FileLogger loggerChild;
-        JsonFileReader jsonFileReader = new JsonFileReader();
+        JsonFileReader jsonFileReader;
 
         public ObservableCollection<Log> ParentLogs { get; set; } = new ObservableCollection<Log>();
         public ObservableCollection<Log> ChildLogs { get; set; } = new ObservableCollection<Log>();
         // Create an instance of InternetOutageDetector
         InternetOutageDetector detector;
+
+        TradeManager tradeManagerParent;
+        TradeManager tradeManagerChild;
 
         public MainWindow()
         {
@@ -26,7 +33,10 @@ namespace ShellProject
             string rootPath = Path.Combine(desktopPath, "Logs_TradeClonewWPF");
             loggerApplication = new FileLogger(rootPath, "Application");
             loggerParent = new FileLogger(rootPath, "Parent");
+            loggerParent.LogInserted += DisplayLogsForParent;
             loggerChild = new FileLogger(rootPath, "Child");
+            loggerChild.LogInserted += DisplayLogsForChild;
+            jsonFileReader = new JsonFileReader(loggerApplication);
 
             // Set the data context for the logs list boxes
             ParentLogsListBox.ItemsSource = ParentLogs;
@@ -34,10 +44,19 @@ namespace ShellProject
 
             // Simulate adding logs every half second
             UpdateApplicationStartTime();
+            DetectInternetOutage();
             LoginParentAccount();
             LoginChildAccount();
-            StartLogging();
-            DetectInternetOutage();
+        }
+
+        private void DisplayLogsForParent(Log log)
+        {
+            AddDataToLog(log, ParentLogs, ParentLogsScrollViewer);
+        }
+
+        private void DisplayLogsForChild(Log log)
+        {
+            AddDataToLog(log, ChildLogs, ChildLogsScrollViewer);
         }
 
         private void DetectInternetOutage()
@@ -70,32 +89,9 @@ namespace ShellProject
 
         private void UpdateApplicationStartTime()
         {
-            StartTimeLabel.Content = DateTime.Now.ToString();
+            StartTimeLabel.Content = DateTime.Now.ToString(AppConstants.DateTimeFormatForDisplay, CultureInfo.InvariantCulture);
             loggerApplication.Log(LogLevel.Info, "Application Started", "The application has initiated successfully.");
 
-        }
-
-        private async void StartLogging()
-        {
-            while (true)
-            {
-                // Add logs to the collections
-
-                AddDataToLog(new Log(LogLevel.Info, "Parent", "ParentDescription"), ParentLogs, ParentLogsScrollViewer);
-                AddDataToLog(new Log(LogLevel.Info, "Child", "ChildDescription"), ChildLogs, ChildLogsScrollViewer);
-
-                AddDataToLog(new Log(LogLevel.Warning, "Parent", "ParentDescription"), ParentLogs, ParentLogsScrollViewer);
-                AddDataToLog(new Log(LogLevel.Warning, "Child", "ChildDescription"), ChildLogs, ChildLogsScrollViewer);
-
-                AddDataToLog(new Log(LogLevel.Error, "Parent", "ParentDescription"), ParentLogs, ParentLogsScrollViewer);
-                AddDataToLog(new Log(LogLevel.Error, "Child", "ChildDescription"), ChildLogs, ChildLogsScrollViewer);
-
-                AddDataToLog(new Log(LogLevel.Fatal, "Parent", "ParentDescription"), ParentLogs, ParentLogsScrollViewer);
-                AddDataToLog(new Log(LogLevel.Fatal, "Child", "ChildDescription"), ChildLogs, ChildLogsScrollViewer);
-
-                // Wait for half a second
-                await Task.Delay(500);
-            }
         }
 
         // Example method to add data to the log and scroll to bottom if needed
@@ -114,18 +110,20 @@ namespace ShellProject
 
         private void LoginParentAccount()
         {
-            var tradeData = jsonFileReader.ReadDataFromJsonFile(Constants.jsonDataFilePath); // Call the method to read data from JSON file for parent account
+            var tradeData = jsonFileReader.ReadDataFromJsonFile(AppConstants.jsonDataFilePath); // Call the method to read data from JSON file for parent account
+            tradeManagerParent = new TradeManager(loggerParent, tradeData.ParentAPIKey, tradeData.ParentAccessToken, tradeData.ParentSecret);
 
             // Simulate parent account login
-            ParentLoginLabel.Content = "Logged In " + DateTime.Now; // Update the status indicator
+            ParentLoginLabel.Content = "Logged In " + DateTime.Now.ToString(AppConstants.DateTimeFormatForDisplay, CultureInfo.InvariantCulture); // Update the status indicator
         }
 
         private void LoginChildAccount()
         {
-            var tradeData = jsonFileReader.ReadDataFromJsonFile(Constants.jsonDataFilePath); // Call the method to read data from JSON file for child account
+            var tradeData = jsonFileReader.ReadDataFromJsonFile(AppConstants.jsonDataFilePath); // Call the method to read data from JSON file for child account
+            tradeManagerChild = new TradeManager(loggerChild, tradeData.ChildAPIKey, tradeData.ChildAccessToken, tradeData.ChildSecret);
 
             // Simulate parent account login
-            ChildLoginLabel.Content = "Logged In " + DateTime.Now; // Update the status indicator
+            ChildLoginLabel.Content = "Logged In " + DateTime.Now.ToString(AppConstants.DateTimeFormatForDisplay, CultureInfo.InvariantCulture); // Update the status indicator
         }
 
         private void ViewDetailInternetOutages_Click(object sender, RoutedEventArgs e)

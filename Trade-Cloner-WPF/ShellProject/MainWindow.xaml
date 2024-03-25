@@ -130,7 +130,7 @@
                                         <ColumnDefinition Width="8" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding DateTime}" Grid.Column="0" />
+                                    <TextBlock Text="{Binding DateTime, StringFormat={}{0:dd-MM-yyyy hh:mm:ss tt}}" Grid.Column="0" />
                                     <StackPanel Grid.Column="2">
                                         <TextBlock Text="{Binding Summary}" />
                                         <TextBlock Text="{Binding Description}" />
@@ -203,7 +203,7 @@
                                         <ColumnDefinition Width="8" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding DateTime}" Grid.Column="0" />
+                                    <TextBlock Text="{Binding DateTime, StringFormat={}{0:dd-MM-yyyy hh:mm:ss tt}}" Grid.Column="0" />
                                     <StackPanel Grid.Column="2">
                                         <TextBlock Text="{Binding Summary}" />
                                         <TextBlock Text="{Binding Description}" />

@@ -1,12 +1,18 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Newtonsoft.Json;
-using static ShellProject.MainWindow;
+using ShellProject.CommonServices.TradeManagement;
 
-namespace ShellProject
+namespace ShellProject.CommonServices.Logging
 {
     public class JsonFileReader
     {
+        private readonly FileLogger logger;
+
+        public JsonFileReader(FileLogger logger)
+        {
+            this.logger = logger;
+        }
+
         public TradeData? ReadDataFromJsonFile(string filePath)
         {
             TradeData? tradeData = null;
@@ -22,12 +28,12 @@ namespace ShellProject
                 }
                 else
                 {
-                    Console.WriteLine("JSON file not found at the specified path.");
+                    logger.Log(LogLevel.Error, "Log file error", "JSON file not found at the specified path.");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error reading JSON file: " + ex.Message);
+                logger.Log(LogLevel.Error, "Log file error details", ex.Message, ex);
             }
             return tradeData;
         }
